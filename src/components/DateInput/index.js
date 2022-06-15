@@ -62,6 +62,14 @@ class DateInput extends PureComponent {
     const { value } = this.state;
     this.update(value);
   };
+  onClick = () => {
+    const { dateDisplayFormat, dateOptions, onClick } = this.props;
+    const { value } = this.state;
+    const parsed = parse(value, dateDisplayFormat, new Date(), dateOptions);
+    if (isValid(parsed)) {
+      onClick(parsed);
+    }
+  };
 
   render() {
     const { className, readOnly, placeholder, ariaLabel, disabled, onFocus } = this.props;
@@ -79,6 +87,7 @@ class DateInput extends PureComponent {
           onChange={this.onChange}
           onBlur={this.onBlur}
           onFocus={onFocus}
+          onClick={this.onClick}
         />
         {invalid && <span className="rdrWarning">&#9888;</span>}
       </span>
@@ -97,6 +106,7 @@ DateInput.propTypes = {
   className: PropTypes.string,
   onFocus: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
 };
 
 DateInput.defaultProps = {
